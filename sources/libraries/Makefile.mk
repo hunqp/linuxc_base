@@ -1,0 +1,7 @@
+-include sources/libraries/libcurl/Makefile.mk
+-include sources/libraries/libopus/Makefile.mk
+-include sources/libraries/libmp4v2/Makefile.mk
+-include sources/libraries/libgiec/Makefile.mk
+-include sources/libraries/libopenssl/Makefile.mk
+-include sources/libraries/libmosquitto/Makefile.mk
+-include sources/libraries/libdatachannel/Makefile.mk
