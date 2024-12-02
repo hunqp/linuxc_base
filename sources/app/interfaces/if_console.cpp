@@ -78,16 +78,17 @@ void parserInputCs(uint8_t num) {
 	break;
 
 	case 3: {
-		static bool b = true;
+		const char *JPG = "snapshot.jpg";
+		const char *B64 = utls::convertJPG2BASE64(JPG);
+		const int B64Len = strlen(B64);
+		const std::string payload = std::string(B64, B64Len);
+		json JSON;
+		JSON["type"] = "CAMERA_CAPTURE";
+		JSON["values"] = payload;
 
-		if (b) {
-			
-		}
-		else {
-			
-		}
-		APP_PRINT("Set flood light state %d\r\n", b);
-		b = !b;
+		int ret = ourPubSubClient.publishTelemetryTimeseries(JSON.dump());
+		printf("Send telemetry timeseries size %d\r\n", ret);
+		free((void*)B64);
 	}
 	break;
 

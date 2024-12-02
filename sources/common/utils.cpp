@@ -3,21 +3,16 @@
 #include <stdint.h>
 #include <string.h>
 #include <iostream>
+#include <vector>
 #include <fcntl.h>
 #include <sys/stat.h>
-#include <curl/curl.h>
-#include <vector>
-#include <sys/ioctl.h>
-#include <net/if.h>
-#include <unistd.h>
-#include <netinet/in.h>
-#include <dirent.h>
 #include <sys/wait.h>
 #include <sys/sysinfo.h>
-#include <vector>
+#include <curl/curl.h>
 #include <openssl/conf.h>
 #include <openssl/evp.h>
 #include <openssl/err.h>
+
 #include <fstream>
 
 #include "base64.h"
@@ -403,6 +398,25 @@ int HTTP_GET(const char *url) {
     fclose(output_file);
 
     return 0;
+}
+
+char* convertJPG2BASE64(const char *snapshot) {
+    FILE *fp = fopen(snapshot, "rb");
+
+    fseek(fp, 0, SEEK_END);
+    const long fileSize = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+
+	char *binary = (char*)malloc(fileSize);
+	fread(binary, sizeof(char), fileSize, fp);
+	fclose(fp);
+
+	int b64Len = BASE64_EncodeLen(fileSize);
+	char *b64 = (char*)malloc(b64Len);
+	memset(b64, 0, b64Len);
+	BASE64_Encode(b64, binary, fileSize);
+
+    return b64;
 }
 
 }

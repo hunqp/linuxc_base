@@ -44,16 +44,63 @@ void* TaskSensorEntry(void*) {
 		msg = ak_msg_rev(AK_TASK_SENSOR_ID);
 
 		switch (msg->header->sig) {
-        case AK_SENSOR_UPDATE: {
-			APP_DBG_SIG("AK_SENSOR_UPDATE\n");
+        case AK_SENSOR_STATUS_UPDATE: {
+			APP_DBG_SIG("AK_SENSOR_STATUS_UPDATE\n");
+
+			/*
+				{
+					"type": "SENSOR_STATUS",
+					"values": {
+						"Doors": ["DISCONNECT", "DISCONNECT"],
+						"Flood": "DISCONNECT",
+						"Heat": "DISCONNECT",
+						"Smoke": "DISCONNECT",
+						"Inputs": [1, 1, 1, 1, 1]
+					},
+					"timestamp": 1722742646
+				}
+			*/
 
            	json JSON;
-			JSON["temperature"] = randomValueSensor(20, 97);
-			JSON["humidity"] = randomValueSensor(35, 99);
-			TaskPostDynamicMsg(AK_TASK_CLOUD_ID, AK_CLOUD_SEND_TELEMETRY, 
-						(uint8_t*)JSON.dump().c_str(), JSON.dump().length());
+			JSON["type"] = "SENSOR_STATUS";
+			JSON["values"]["Doors"][0] = "DISCONNECT";
+			JSON["values"]["Doors"][1] = "DISCONNECT";
+			JSON["values"]["Flood"] = "DISCONNECT";
+			JSON["values"]["Heat"] = "DISCONNECT";
+			JSON["values"]["Smoke"] = "DISCONNECT";
+			for (uint8_t id = 0; id < 4; ++id) {
+				JSON["values"]["Inputs"][id] = 1;
+			}			
+
+			ourPubSubClient.publishTelemetryTimeseries(JSON.dump());
         }
         break;
+
+		case AK_SENSOR_VALUE_UPDATE: {
+			APP_DBG_SIG("AK_SENSOR_VALUE_UPDATE\n");
+
+			/*
+				{
+					"type": "SENSOR_VALUE",
+					"values": {
+						"ACCurrent_mA": [0, 0],
+						"SmokeCurrent_mA": 0,
+						"TemperatureCelsius": [0.0, 0.0]
+					},
+					"timestamp": 1722742646
+				}
+			*/
+			json JSON;
+			JSON["type"] = "SENSOR_VALUE";
+			JSON["values"]["ACCurrent_mA"][0] = 0;
+			JSON["values"]["ACCurrent_mA"][1] = 0;
+			JSON["values"]["SmokeCurrent_mA"] = 0;
+			JSON["values"]["TemperatureCelsius"][0] = 0.0;
+			JSON["values"]["TemperatureCelsius"][1] = 0.0;
+
+			ourPubSubClient.publishTelemetryTimeseries(JSON.dump());
+		}
+		break;
 
 		default:
         break;

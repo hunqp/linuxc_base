@@ -4,8 +4,7 @@
 #include "ak.h"
 
 #include "task_system.h"
-#include "task_setting.h"
-#include "task_control.h"
+#include "task_device.h"
 #include "task_sensor.h"
 #include "task_cloud.h"
 
@@ -21,8 +20,7 @@ enum {
 
     /* APP TASKS */
     AK_TASK_SYSTEM_ID,
-    AK_TASK_SETTING_ID,
-    AK_TASK_CONTROL_ID,
+    AK_TASK_DEVICE_ID,
     AK_TASK_SENSOR_ID,
     AK_TASK_CLOUD_ID,
 

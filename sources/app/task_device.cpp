@@ -15,42 +15,40 @@
 #include "app_dbg.h"
 #include "app_data.h"
 #include "task_list.h"
-#include "task_control.h"
+#include "task_device.h"
 
 #include "utils.h"
 
 #define TAG	"TaskControl"
 
 /* Extern variables ----------------------------------------------------------*/
-q_msg_t taskControlMailbox;
+q_msg_t taskDeviceMailbox;
 
 /* Private variables ---------------------------------------------------------*/
 
 /* Private function prototypes -----------------------------------------------*/
 
 /* Function implementation ---------------------------------------------------*/
-void* TaskControlEntry(void*) {
+void* TaskDeviceEntry(void*) {
 	ak_msg_t* msg = AK_MSG_NULL;
 
 	wait_all_tasks_started();
 
-    APP_PRINT("[STARTED] AK_TASK_CONTROL_ID Entry\n");
+    APP_PRINT("[STARTED] AK_TASK_DEVICE_ID Entry\n");
 
 	while (1) {
-		msg = ak_msg_rev(AK_TASK_CONTROL_ID);
+		msg = ak_msg_rev(AK_TASK_DEVICE_ID);
 
 		switch (msg->header->sig) {
-		case AK_CONTROL_LED_REQ: {
-			APP_DBG_SIG("AK_CONTROL_LED_REQ\n");
+		case AK_DEVICE_SETTING_ACCESS_CONTROL_REQ: {
+			APP_DBG_SIG("AK_DEVICE_SETTING_ACCESS_CONTROL_REQ\n");
 
-			uint8_t *state = (uint8_t*)msg->header->payload;
+		}
+		break;
 
-			APP_DBG(TAG, "CONTROL LED STATE %d", *state);
+		case AK_SETTING_SETTING_CAMERA_CAPTURE_REQ: {
+			APP_DBG_SIG("AK_SETTING_SETTING_CAMERA_CAPTURE_REQ\n");
 
-			json JSON;
-			JSON["status"] = *state ? true : false;
-			TaskPostDynamicMsg(AK_TASK_CLOUD_ID, AK_CLOUD_SEND_TELEMETRY, 
-						(uint8_t*)JSON.dump().c_str(), JSON.dump().length());
 		}
 		break;
 

@@ -50,6 +50,8 @@ extern std::string getMACString();
 extern int HTTP_GET(const char *url);
 extern int HTTP_GET_DIGEST(const char *url);
 
+extern char* convertJPG2BASE64(const char *snapshot);
+
 }
 
 #endif /* __UTILS_H */

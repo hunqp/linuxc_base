@@ -4,27 +4,16 @@
 #include "ak.h"
 
 /*----------------------------------------------------------------------------*
- *  DECLARE: AK_TASK_SETTING_ID
+ *  DECLARE: AK_TASK_DEVICE_ID
  *  Note: Message signals
  *----------------------------------------------------------------------------*/
 /* Define timer */
 
 /* Define signal */
 enum {
-    AK_SETTING_INIT = AK_USER_DEFINE_SIG,
-    AK_SETTING_SET_ACCESS_CONTROL_REQ,
-    AK_SETTING_SET_CAMERA_CAPTURE_REQ,
-};
-
-/*----------------------------------------------------------------------------*
- *  DECLARE: AK_TASK_CONTROL_ID
- *  Note: Message signals
- *----------------------------------------------------------------------------*/
-/* Define timer */
-
-/* Define signal */
-enum {
-    AK_CONTROL_LED_REQ = AK_USER_DEFINE_SIG,
+    AK_DEVICE_INIT = AK_USER_DEFINE_SIG,
+    AK_DEVICE_SETTING_ACCESS_CONTROL_REQ,
+    AK_SETTING_SETTING_CAMERA_CAPTURE_REQ,
 };
 
 /*----------------------------------------------------------------------------*
@@ -69,8 +58,8 @@ enum {
 
 /* Define signal */
 enum {
-    AK_SENSOR_UPDATE = AK_USER_DEFINE_SIG,
-
+    AK_SENSOR_STATUS_UPDATE = AK_USER_DEFINE_SIG,
+    AK_SENSOR_VALUE_UPDATE,
 };
 
 /*----------------------------------------------------------------------------*

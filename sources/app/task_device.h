@@ -1,5 +1,5 @@
-#ifndef __TASK_CONTROL_H
-#define __TASK_CONTROL_H
+#ifndef __TASK_DEVICE_H
+#define __TASK_DEVICE_H
 
 #include "message.h"
 
@@ -11,9 +11,9 @@
 /* Typedef -------------------------------------------------------------------*/
 
 /* Extern variables ----------------------------------------------------------*/
-extern q_msg_t taskControlMailbox;
+extern q_msg_t taskDeviceMailbox;
 
 /* Function prototypes -------------------------------------------------------*/
-extern void* TaskControlEntry(void*);
+extern void* TaskDeviceEntry(void*);
 
 #endif /* __TASK_CONTROL_H */

@@ -13,7 +13,6 @@ OBJ 		+= $(OBJ_DIR)/task_list.o
 OBJ 		+= $(OBJ_DIR)/task_cloud.o
 OBJ 		+= $(OBJ_DIR)/task_system.o
 OBJ 		+= $(OBJ_DIR)/task_sensor.o
-OBJ 		+= $(OBJ_DIR)/task_setting.o
-OBJ 		+= $(OBJ_DIR)/task_control.o
+OBJ 		+= $(OBJ_DIR)/task_device.o
 
 

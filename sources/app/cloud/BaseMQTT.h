@@ -35,7 +35,7 @@ public:
     int performConnect(std::string host, int port, std::string id="anoymous-01", int keepalive=60);
     int performSubscribe(std::string topic, eQoS qos=eQoS::QoS0);
     int performUnsubscribe(std::string topic);
-    int performPublish(std::string topic, std::string payload, eQoS qos=eQoS::QoS0, bool retain=false);
+    int performPublish(const std::string topic, const std::string & payload, eQoS qos=eQoS::QoS0, bool retain=false);
 
 private:
     std::string mId;
@@ -62,6 +62,11 @@ public:
 	void on_connect(int rc) override;
 	void on_disconnect(int rc) override;
 	void on_message(const struct mosquitto_message *message) override;
+
+public:
+    int publishAttributes(const std::string & payload);
+    int publishTelemetryTimeseries(const std::string & payload);
+    int publishRemoteProcedureCalls(std::string reqId, const std::string & payload);
 };
 
 #endif /* _BASE_MQTT_H_ */

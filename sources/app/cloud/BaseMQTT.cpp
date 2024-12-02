@@ -113,7 +113,7 @@ bool BaseMQTT::isConnected() {
     return ret;
 }
 
-int BaseMQTT::performPublish(std::string topic, std::string payload, eQoS qos, bool retain) {
+int BaseMQTT::performPublish(std::string topic, const std::string & payload, eQoS qos, bool retain) {
 	int ret = BMQ_ERR_FAILURE;
 
 	if (!mConnected) {
@@ -136,7 +136,7 @@ int BaseMQTT::performSubscribe(std::string topic, eQoS qos) {
 	}
 
 	pthread_mutex_lock(&mMutex);
-	ret = (mosquittopp::subscribe(NULL, topic.c_str(), (int)qos) == MOSQ_ERR_SUCCESS);
+	ret = mosquittopp::subscribe(nullptr, topic.c_str(), (int)qos);
 	pthread_mutex_unlock(&mMutex);
 
 	return (ret == MOSQ_ERR_SUCCESS ? BMQ_ERR_SUCCESS : BMQ_ERR_FAILURE);
@@ -151,8 +151,20 @@ int BaseMQTT::performUnsubscribe(std::string topic) {
 	}
 
 	pthread_mutex_lock(&mMutex);
-	ret = (unsubscribe(NULL, topic.c_str()) == MOSQ_ERR_SUCCESS);
+	ret = mosquittopp::unsubscribe(nullptr, topic.c_str());
 	pthread_mutex_unlock(&mMutex);
 
 	return (ret == MOSQ_ERR_SUCCESS ? BMQ_ERR_SUCCESS : BMQ_ERR_FAILURE);
+}
+
+int BaseMQTT::publishAttributes(const std::string & payload) {
+	return performPublish(attributesPublishTopic(), payload, BaseMQTT::eQoS::QoS1, true);
+}
+
+int BaseMQTT::publishTelemetryTimeseries(const std::string & payload) {
+	return performPublish(telemetryPublishTopic(), payload, BaseMQTT::eQoS::QoS1, false);
+}
+
+int BaseMQTT::publishRemoteProcedureCalls(std::string reqId, const std::string & payload) {
+	return performPublish(remoteProcedureCallsPublishTopic(reqId), payload, BaseMQTT::eQoS::QoS1, false);
 }

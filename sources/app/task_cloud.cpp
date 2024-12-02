@@ -37,7 +37,7 @@ void* TaskCloudEntry(void*) {
 
     APP_PRINT("[STARTED] AK_TASK_CLOUD_ID Entry\n");
 
-	const std::string host = "broker.hivemq.com";
+	const std::string host = "broker.emqx.io";
 	const int port = 1883;
 	const std::string username = "t1n0kdn2mgvq8ac1fw8g";
 	const std::string password = "";
@@ -53,7 +53,7 @@ void* TaskCloudEntry(void*) {
 	// ourPubSubClient.setUsernameAndPassword(username, password);
 	// ourPubSubClient.setLastWillAndTestament(lwTopic, lwMessage.dump(), BaseMQTT::eQoS::QoS1, true);
 
-	// TaskPostPureMsg(AK_TASK_CLOUD_ID, AK_CLOUD_TRY_CONNECT);
+	TaskPostPureMsg(AK_TASK_CLOUD_ID, AK_CLOUD_TRY_CONNECT);
 
 	while (1) {
 		msg = ak_msg_rev(AK_TASK_CLOUD_ID);
@@ -73,8 +73,8 @@ void* TaskCloudEntry(void*) {
 		case AK_CLOUD_ON_CONNECTED: {
 			APP_DBG_SIG("AK_CLOUD_ON_CONNECTED\n");
 
-			ourPubSubClient.performSubscribe(attributesSubscribeTopic());
-			ourPubSubClient.performSubscribe(remoteProcedureCallsSubscribeTopic());
+			// ourPubSubClient.performSubscribe(attributesSubscribeTopic());
+			// ourPubSubClient.performSubscribe(remoteProcedureCallsSubscribeTopic());
 			ourDeviceStatus.lastConnected = time(NULL);
 			
 			std::string attributes = attributesDeviceStatusPayload(&ourDeviceStatus);
@@ -204,10 +204,10 @@ void onMessage(std::string& topic, std::string &payload) {
 				
 			}
 			else if (method == "PASSWORD_ACCESS_CONTROL") {
-				TaskPostDynamicMsg(AK_TASK_SETTING_ID, AK_SETTING_SET_ACCESS_CONTROL_REQ, (uint8_t*)JSON.dump().c_str(), JSON.dump().length());
+				TaskPostDynamicMsg(AK_TASK_DEVICE_ID, AK_DEVICE_SETTING_ACCESS_CONTROL_REQ, (uint8_t*)JSON.dump().c_str(), JSON.dump().length());
 			}
 			else if (method == "CAMERA_SETTING") {
-				TaskPostDynamicMsg(AK_TASK_SETTING_ID, AK_SETTING_SET_CAMERA_CAPTURE_REQ, (uint8_t*)JSON.dump().c_str(), JSON.dump().length());
+				TaskPostDynamicMsg(AK_TASK_DEVICE_ID, AK_SETTING_SETTING_CAMERA_CAPTURE_REQ, (uint8_t*)JSON.dump().c_str(), JSON.dump().length());
 			}
 			else {
 				/* Put other RPC methods request here ... */

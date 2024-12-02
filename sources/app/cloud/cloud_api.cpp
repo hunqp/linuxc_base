@@ -9,7 +9,7 @@ const std::string attributesPublishTopic() {
 }
 
 const std::string telemetryPublishTopic() {
-    return std::string("v1/devices/me/telemetry");
+    return std::string("v1/device/me/telemetry");
 }
 
 const std::string remoteProcedureCallsPublishTopic(std::string reqId) {
